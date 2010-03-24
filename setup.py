@@ -40,16 +40,26 @@ except ImportError:
     from setuptools import setup, find_packages
 
 setup(name='pymemtools',
-      version='0.1.1',
+      version='0.1.2',
       description='pymemtools: basic implementation of a memory pattern',
       author='Pablo Alejandro Costesich',
       author_email='pcostesi@alu.itba.edu.ar',
       maintainer='Pablo Alejandro Costesich',
       maintainer_email='rhfixer@gmail.com',
+      url='http://memtools.arcticwolf.com.ar',
       packages=['memtools',],
-      long_description="A very basic and easy way to implement the memory \
-        pattern in your apps.",
+      long_description=open('README.txt').read(),
       license="New (three-clause) BSD",
       platforms=["any"],
       install_requires=['redis','python-memcached'],
+      classifiers=[
+          'Development Status :: 4 - Beta',
+          'Intended Audience :: Developers'
+          'License :: OSI Approved :: BSD License',
+          'Operating System :: OS Independent',
+          'Programming Language :: Python',
+          'Topic :: Database',
+          'Topic :: Software Development :: Libraries',
+          ],
+
      )
