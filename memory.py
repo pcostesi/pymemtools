@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#       sin título.py
+#       memory.py
 #
 #       Copyright 2010 Pablo Alejandro Costesich <pcostesi@alu.itba.edu.ar>
 #
