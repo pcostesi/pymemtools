@@ -1,24 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#       storages.py
-#
+#       memcache.py
+#       
 #       Copyright 2010 Pablo Alejandro Costesich <pcostesi@alu.itba.edu.ar>
-#
+#       
 #       Redistribution and use in source and binary forms, with or without
 #       modification, are permitted provided that the following conditions are
 #       met:
-#
+#       
 #       * Redistributions of source code must retain the above copyright
 #         notice, this list of conditions and the following disclaimer.
 #       * Redistributions in binary form must reproduce the above
 #         copyright notice, this list of conditions and the following disclaimer
 #         in the documentation and/or other materials provided with the
 #         distribution.
-#       * Neither the name of the Dev Team nor the names of its
+#       * Neither the name of the  nor the names of its
 #         contributors may be used to endorse or promote products derived from
 #         this software without specific prior written permission.
-#
+#       
 #       THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 #       "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 #       LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -30,41 +30,13 @@
 #       THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 #       (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #       OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 
-"""
-Memory decorator and utilites to speed up access to computationally expensive
-functions.
-"""
 
-import random, time
 from threading import Lock, Thread
 from memcache import Client as MemcacheClient
-from redis.client import Redis as RedisClient
 import logging
 from memtools.protocols import Memory, MemoryPool
-from memtools.pattern import Memorized, memorize
-
-try:
-    from cPickle import dumps, loads
-except ImportError:
-    from pickle import dumps, loads
-
-
-#
-#   AUXILIARY CLASSES
-#
-
-
-class NotSet(object):
-    """ Empty class used to differenciate None from unsetted values in k-v
-        storages that return None in both cases, like python-memcached.
-    """
-    pass
-
-
-class OutOfBounds(Exception):
-    pass
+from memtools.storages import NotSet, OutOfBounds
 
 
 class MemcacheMemory(Memory):
@@ -196,94 +168,3 @@ class MemcacheMemoryPool(MemoryPool):
             client.__delitem__(key)
         finally:
             self._return_client(client)
-
-
-class RedisMemory(Memory):
-    """
-        Memory gateway to a Redis server
-    """
-
-    def __init__(self, expire=None, debug=False,
-                *args, **kwargs):
-        """
-            :param servers: List of servers to use. Please, read
-            redis.Redis help.
-
-        """
-        self._client = RedisClient(*args, **kwargs)
-        self._expire = expire
-        logging.basicConfig(level=logging.WARNING)
-        self.log = logging.getLogger("Redis-Gateway")
-        if debug:
-            self.log.setLevel(logging.DEBUG)
-
-    def __getitem__(self, key):
-        self.log.debug("Accessing key %s", key)
-        value = self._client.get(key)
-        if value:
-            value = loads(str(value))
-        if isinstance(value, NotSet):
-            return None
-        elif value is None:
-            raise KeyError
-        else:
-            self.log.debug("Key %s returned %s", key, value)
-            return value
-
-    def __setitem__(self, key, value):
-        self.log.debug("Setting key %s to %s", key, value)
-        if value is None:
-            value = NotSet()
-        self._client.set(key, dumps(value))
-        if self._expire:
-            self._client.expire(key, self._expire)
-
-    def __delitem__(self, key):
-        self.log.debug("Deleting key %s", key)
-        if self._client.delete(key) == 0:
-            raise KeyError
-
-    def expire(self, key, time):
-        self.log.debug("Setting expire time to %s seconds for key %s",
-                time, key)
-        self._client.expire(key, time)
-
-    def __getattr__(self, attr):
-        redis_attr = getattr(self._client, attr)
-        return redis_attr
-
-
-class Alzheimer(Memory):
-    '''This is a mock class. Forget it.'''
-
-    def __init__(self, disease=False, *args, **kwargs):
-        self._client = {}
-        if disease:
-            t = Thread(target=self.__disease)
-            t.start()
-
-    def __setitem__(self, key, value):
-        self._client.__setitem__(key, value)
-
-    def __getitem__(self, key):
-        return self._client.__getitem__(key)
-
-    def __delitem__(self, key):
-        self._client.__delitem__(key)
-
-    def keys(self, string):
-        a = []
-        for i in self._client.keys():
-            if i.startswith(string[:-1]):
-                a.append(i)
-        return a
-
-    def __disease(self):
-        while True:
-            rand = random.uniform(1, 3600)
-            time.sleep(rand)
-            try:
-                del self._client[self._client.keys()[int(random.uniform(0,
-                            len(self._client)))]]
-            except:
-                pass
