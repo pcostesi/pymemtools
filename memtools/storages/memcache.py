@@ -60,11 +60,10 @@ class MemcacheMemory(Memory):
         self.log.debug("Accessing key %s", key)
         value = self._client.get(key)
         if isinstance(value, NotSet):
-            return None
+            value = None
         elif value is None:
             raise KeyError
-        else:
-            return value
+        return value
 
     def __setitem__(self, key, value):
         self.log.debug("Setting key")

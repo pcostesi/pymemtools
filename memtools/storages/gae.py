@@ -47,11 +47,15 @@ class Memcache(Memory):
 
     def __getitem__(self, key):
         val = memcache.get(key)
-        if val is None:
+        if isinstance(val, NotSet):
+            val = None
+        elif val is None:
             raise KeyError
         return val
 
     def __setitem__(self, key, value):
+        if value is None:
+            value = NotSet()
         return memcache.set(key, value, self.expire, namespace=self.namespace)
 
     def __delitem__(self, key)
