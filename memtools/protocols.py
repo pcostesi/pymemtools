@@ -46,8 +46,8 @@ from memtools.pattern import Memorized, memorize
 class Memory(object):
     """
         Memory objects are key-value gateways to a database or any other kind
-       of memory storage. They behave the same way dictionaries do, which
-       makes it easier to mock them.
+        of memory storage. They behave the same way dictionaries do, which
+        makes it easier to mock them.
 
         Required methods are __getitem__, __setitem__ and __delitem__. get(),
         set() are mapped to __getitem__ and __setitem__.
