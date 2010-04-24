@@ -38,8 +38,8 @@ from functools import wraps
 from hashlib import md5
 import logging
 
-class Memorized(object):
-    """ This class wraps a normal callable and returns a memorized callable
+class Memoized(object):
+    """ This class wraps a normal callable and returns a memoized callable
         with a "memo" storage. End users are not intended to know what happens
         inside this class, neither they should know about it.
 
@@ -49,7 +49,7 @@ class Memorized(object):
         self.__f = f
         self.__memo = memo
         logging.basicConfig(level=logging.WARNING)
-        self.log = logging.getLogger("Memorized Callable %s" % f.__name__)
+        self.log = logging.getLogger("Memorzed Callable %s" % f.__name__)
         if debug:
             self.log.setLevel(logging.DEBUG)
         self.hashing_function = hashing_function
@@ -66,7 +66,7 @@ class Memorized(object):
 
     def __call__(self, *args, **kwargs):
         key = self.__create_key(self.__f, args, kwargs)
-        self.log.debug("Calling memorized value %s", key)
+        self.log.debug("Calling memoized value %s", key)
         try:
             return self.__memo[key]
         except KeyError:
@@ -76,10 +76,10 @@ class Memorized(object):
             return val
 
 
-class memorize(object):
+class memoize(object):
     """
-        The memorize decorator takes a Memory (or Memory-compatible) object
-        and masks the Memorized decorator to keep the original signature
+        The memoize decorator takes a Memory (or Memory-compatible) object
+        and masks the Memoized decorator to keep the original signature
         clean.
 
         Use of this decorator is deprecated since Memory objects implement
@@ -91,6 +91,6 @@ class memorize(object):
         self.debug = debug
 
     def __call__(self, f):
-        memo = Memorized(f, self._memory, self.debug)
+        memo = Memoized(f, self._memory, self.debug)
         wraps(f)(memo)
         return memo

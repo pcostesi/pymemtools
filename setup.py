@@ -41,8 +41,8 @@ except ImportError:
 from os.path import dirname, join, abspath
 
 setup(name='pymemtools',
-      version='0.2.1',
-      description='pymemtools: basic implementation of a memory pattern',
+      version='0.2.2',
+      description='basic memoization (dynamic programming) decorator',
       author='Pablo Alejandro Costesich',
       author_email='pcostesi@alu.itba.edu.ar',
       maintainer='Pablo Alejandro Costesich',

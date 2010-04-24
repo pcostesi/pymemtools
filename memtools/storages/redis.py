@@ -64,20 +64,15 @@ class RedisMemory(Memory):
     def __getitem__(self, key):
         self.log.debug("Accessing key %s", key)
         value = self._client.get(key)
-        if value:
-            value = loads(str(value))
-        if isinstance(value, NotSet):
-            return None
-        elif value is None:
+        if value is None:
             raise KeyError
         else:
-            self.log.debug("Key %s returned %s", key, value)
-            return value
+            value = loads(str(value))
+        self.log.debug("Key %s returned %s", key, value)
+        return value
 
     def __setitem__(self, key, value):
         self.log.debug("Setting key %s to %s", key, value)
-        if value is None:
-            value = NotSet()
         self._client.set(key, dumps(value))
         if self._expire:
             self._client.expire(key, self._expire)

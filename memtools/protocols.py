@@ -40,7 +40,7 @@
 
 
 from functools import wraps
-from memtools.pattern import Memorized, memorize
+from memtools.pattern import Memoized, memoize
 
 
 class Memory(object):
@@ -53,7 +53,7 @@ class Memory(object):
         set() are mapped to __getitem__ and __setitem__.
 
         A convenience method __call__ is defined to use objects of this class
-        as decorators. Doing so will apply the memorize pattern to the
+        as decorators. Doing so will apply the memoize pattern to the
         function. You can find more information in the corresponding docstring
         in __call__.
 
@@ -77,7 +77,7 @@ class Memory(object):
             functools.
 
         """
-        memo = Memorized(f, self)
+        memo = Memoized(f, self)
         wraps(f)(memo)
         return memo
 
