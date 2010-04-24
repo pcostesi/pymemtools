@@ -99,7 +99,7 @@
 <a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
 <a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
 <a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">functools</tt> <tt class="py-keyword">import</tt> <tt class="py-name">wraps</tt> </tt>
-<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package memtools=memtools-module.html"><a title="memtools" class="py-name" href="#" onclick="return doclink('link-0', 'memtools', 'link-0');">memtools</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module memtools.pattern=memtools.pattern-module.html"><a title="memtools.pattern" class="py-name" href="#" onclick="return doclink('link-1', 'pattern', 'link-1');">pattern</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class memtools.pattern.Memorized=memtools.pattern.Memorized-class.html"><a title="memtools.pattern.Memorized" class="py-name" href="#" onclick="return doclink('link-2', 'Memorized', 'link-2');">Memorized</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Class memtools.pattern.memorize=memtools.pattern.memorize-class.html"><a title="memtools.pattern.memorize" class="py-name" href="#" onclick="return doclink('link-3', 'memorize', 'link-3');">memorize</a></tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package memtools=memtools-module.html"><a title="memtools" class="py-name" href="#" onclick="return doclink('link-0', 'memtools', 'link-0');">memtools</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module memtools.pattern=memtools.pattern-module.html"><a title="memtools.pattern" class="py-name" href="#" onclick="return doclink('link-1', 'pattern', 'link-1');">pattern</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class memtools.pattern.Memoized=memtools.pattern.Memoized-class.html"><a title="memtools.pattern.Memoized" class="py-name" href="#" onclick="return doclink('link-2', 'Memoized', 'link-2');">Memoized</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Class memtools.pattern.memoize=memtools.pattern.memoize-class.html"><a title="memtools.pattern.memoize" class="py-name" href="#" onclick="return doclink('link-3', 'memoize', 'link-3');">memoize</a></tt> </tt>
 <a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
 <a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
 <a name="Memory"></a><div id="Memory-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="Memory-toggle" onclick="return toggle('Memory');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="memtools.protocols.Memory-class.html">Memory</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
@@ -112,7 +112,7 @@
 <a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">        set() are mapped to __getitem__ and __setitem__.</tt> </tt>
 <a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
 <a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">        A convenience method __call__ is defined to use objects of this class</tt> </tt>
-<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">        as decorators. Doing so will apply the memorize pattern to the</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">        as decorators. Doing so will apply the memoize pattern to the</tt> </tt>
 <a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">        function. You can find more information in the corresponding docstring</tt> </tt>
 <a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        in __call__.</tt> </tt>
 <a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
@@ -136,7 +136,7 @@
 <a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">            functools.</tt> </tt>
 <a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
 <a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
-<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">memo</tt> <tt class="py-op">=</tt> <tt id="link-4" class="py-name"><a title="memtools.pattern.Memorized" class="py-name" href="#" onclick="return doclink('link-4', 'Memorized', 'link-2');">Memorized</a></tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">memo</tt> <tt class="py-op">=</tt> <tt id="link-4" class="py-name"><a title="memtools.pattern.Memoized" class="py-name" href="#" onclick="return doclink('link-4', 'Memoized', 'link-2');">Memoized</a></tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
 <a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-name">wraps</tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt><tt class="py-op">(</tt><tt class="py-name">memo</tt><tt class="py-op">)</tt> </tt>
 <a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">memo</tt> </tt>
 </div><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
@@ -213,7 +213,7 @@ expandto(location.href);
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Apr 22 16:09:22 2010
+    Generated by Epydoc 3.0.1 on Fri Apr 23 21:54:05 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
