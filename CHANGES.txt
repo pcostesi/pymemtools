@@ -1,11 +1,14 @@
 CHANGELOG:
 
-- 2010.04.22 (version 0.2.2):
+- 2010.04.23 (version 0.2.3):
   - Fixed spelling mistake (thank you Steve Witham!). The pattern is called Memoize
     and not Memorize.
   - The Memorize class and the memoized wrapper had been renamed to
     Memoize and memoized respectively.
   - Deleted __version__ from memtools/__init__.py
+
+- 2010.04.22 (version 0.2.2):
+  - Revision number update to sync with Galaktia Project rev. number.
 
 - 2010.04.22 (version 0.2.1):
   - Fixed a bug in gae and memcache modules.
