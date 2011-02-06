@@ -40,7 +40,30 @@
 
 
 from functools import wraps
-from memtools.pattern import Memoized, memoize
+from memtools.pattern import Memoized
+from StringIO import StringIO
+
+
+class KeyFile(StringIO):
+
+    def __init__(self, master, key):
+        self.master = master;
+        self.key = key;
+        StringIO.__init__(self, master.get(key))
+
+    def __enter__(self):
+        return self
+
+    def close(self):
+        self.flush()
+        self.master.set(self.key, self.getvalue())
+        StringIO.close(self)
+
+    def __exit__(self, ex_type, ex_name, ex_tb):
+        if ex_type is None:
+            self.close()
+        else:
+            raise ex_type
 
 
 class Memory(object):
@@ -49,8 +72,9 @@ class Memory(object):
         of memory storage. They behave the same way dictionaries do, which
         makes it easier to mock them.
 
-        Required methods are __getitem__, __setitem__ and __delitem__. get(),
-        set() are mapped to __getitem__ and __setitem__.
+        Required methods are __getitem__, __setitem__ and __delitem__.
+        set() is mapped to __setitem__. get() is a thin wrapper to
+        __getitem__ (with a default param)
 
         A convenience method __call__ is defined to use objects of this class
         as decorators. Doing so will apply the memoize pattern to the
@@ -81,11 +105,18 @@ class Memory(object):
         wraps(f)(memo)
         return memo
 
-    def get(self, key):
-        return self.__getitem__(key)
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
 
     def set(self, key, value):
-        self.__setitem__(key, value)
+        self[key] = value
+
+    def open(self, key):
+        return KeyFile(self, key)
+
 
 
 class MemoryPool(Memory):

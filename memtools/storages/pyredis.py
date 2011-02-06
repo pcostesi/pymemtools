@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#       gae.py
+#       redis.py
 #
 #       Copyright 2010 Pablo Alejandro Costesich <pcostesi@alu.itba.edu.ar>
 #
@@ -31,42 +31,63 @@
 #       (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #       OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
-from google.appengine.api import memcache
+from redis import Redis as RedisClient
 import logging
-from memtools.protocols import Memory, KeyFile
+from memtools.protocols import Memory, MemoryPool
 from memtools.storages import NotSet, OutOfBounds
 
+try:
+    from cPickle import dumps, loads
+except ImportError:
+    from pickle import dumps, loads
 
-class Memcache(Memory):
 
-    def __init__(self, expire=0, namespace=None, prefix=''):
-        self.expire = expire
-        self.namespace = namespace
-        self.prefix = prefix
+class RedisMemory(Memory):
+    """
+        Memory gateway to a Redis server
+    """
+
+    def __init__(self, expire=None, debug=False,
+                *args, **kwargs):
+        """
+            :param servers: List of servers to use. Please, read
+            redis.Redis help.
+
+        """
+        self._client = RedisClient(*args, **kwargs)
+        self._expire = expire
+        logging.basicConfig(level=logging.WARNING)
+        self.log = logging.getLogger("Redis-Gateway")
+        if debug:
+            self.log.setLevel(logging.DEBUG)
 
     def __getitem__(self, key):
-        val = memcache.get(key)
-        if isinstance(val, NotSet):
-            val = None
-        elif val is None:
+        self.log.debug("Accessing key %s", key)
+        value = self._client.get(key)
+        if value is None:
             raise KeyError
-        return val
+        else:
+            value = loads(str(value))
+        self.log.debug("Key %s returned %s", key, value)
+        return value
 
     def __setitem__(self, key, value):
-        if value is None:
-            value = NotSet()
-        return memcache.set(key, value, self.expire, namespace=self.namespace)
+        self.log.debug("Setting key %s to %s", key, value)
+        self._client.set(key, dumps(value))
+        if self._expire:
+            self._client.expire(key, self._expire)
 
-    def __delitem__(self, key)
-        return memcache.delete(key, self.namespace)
+    def __delitem__(self, key):
+        self.log.debug("Deleting key %s", key)
+        if self._client.delete(key) == 0:
+            raise KeyError
 
-    def update(self, E, **F):
-        for d in E, F:
-            memcache.set_multi(d, key_prefix=self.prefix, time=self.expire)
+    def expire(self, key, time):
+        self.log.debug("Setting expire time to %s seconds for key %s",
+                time, key)
+        self._client.expire(key, time)
 
-    def open(self, key):
-        return KeyFile(self, key)
+    def __getattr__(self, attr):
+        redis_attr = getattr(self._client, attr)
+        return redis_attr
 
-
-# TODO: add 304-messages + memcache wrapper.

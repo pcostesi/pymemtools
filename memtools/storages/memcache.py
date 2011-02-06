@@ -35,8 +35,9 @@
 from threading import Lock, Thread
 from memcache import Client as MemcacheClient
 import logging
-from memtools.protocols import Memory, MemoryPool
+from memtools.protocols import Memory, MemoryPool, KeyFile
 from memtools.storages import NotSet, OutOfBounds
+
 
 
 class MemcacheMemory(Memory):
@@ -75,6 +76,9 @@ class MemcacheMemory(Memory):
         self.log.debug("Deleting key %s", key)
         if self._client.delete(key) == 0:
             raise KeyError
+
+    def open(self, key):
+        return KeyFile(self, key)
 
 
 class MemcacheMemoryPool(MemoryPool):

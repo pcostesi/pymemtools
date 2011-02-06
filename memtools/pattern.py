@@ -49,19 +49,19 @@ class Memoized(object):
         self.__f = f
         self.__memo = memo
         logging.basicConfig(level=logging.WARNING)
-        self.log = logging.getLogger("Memorzed Callable %s" % f.__name__)
+        self.log = logging.getLogger("Memorzed Callable %s" % f.func_name)
         if debug:
             self.log.setLevel(logging.DEBUG)
         self.hashing_function = hashing_function
 
     def __create_key(self, f, *args, **kwargs):
 #       TODO: Is there another way to create a key?
-        the_hash = self.hashing_function(f.__name__)
+        the_hash = self.hashing_function(f.func_name)
         for arg in args:
             the_hash.update(str(arg))
         the_hash.update("|")
         for key, val in kwargs.iteritems():
-            the_hash.update("%s:%s;".__mod__(key, val))
+            the_hash.update("%s:%s;" % (key, val))
         return the_hash.hexdigest()
 
     def __call__(self, *args, **kwargs):
@@ -84,6 +84,8 @@ class memoize(object):
 
         Use of this decorator is deprecated since Memory objects implement
         the same functionality in their __call__ methods.
+
+        This decorator is Deprecated. It will be obsolete by v0.3
     """
 
     def __init__(self, memory, debug=False):
